@@ -6,6 +6,15 @@ param adminUsername string
 @secure()
 param adminPassword string
 
+@description('Name of the virtual machine.')
+param vmName string
+
+@description('Virtual Network Name')
+param vnetName string
+
+@description('Subnet Name')
+param subnetName string
+
 @description('The Windows version for the VM. This will pick a fully patched image of this given Windows version.')
 @allowed([
 '2019-Datacenter'
@@ -19,17 +28,21 @@ param OSVersion string = '2019-datacenter-gensecond'
 @description('Size of the virtual machine.')
 param vmSize string = 'Standard_D2s_v5'
 
-@description('Name of the virtual machine.')
-param vmName string
-
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Virtual Network Name')
-param vnetName string
+@description('Enable or Disable Accelerated Networking')
+@allowed([
+  true
+  false
+])
+param acceleratedNetwork bool = true
 
-@description('Subnet Name')
-param subnetName string
+@description('Name of Engineer Creating the Resource and Date Created On')
+param createdBy string
+param createdOn string = utcNow('d')
+
+
 
 
 
@@ -73,12 +86,17 @@ resource nic 'Microsoft.Network/networkInterfaces@2021-02-01' = {
         }
       }
     ]
+    enableAcceleratedNetworking: acceleratedNetwork
   }
 }
 
 resource vm 'Microsoft.Compute/virtualMachines@2021-03-01' = {
   name: vmName
   location: location
+  tags: {
+    createdby: createdBy
+    createdon: createdOn
+  }
   properties: {
     hardwareProfile: {
       vmSize: vmSize
