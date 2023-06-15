@@ -21,10 +21,10 @@ param subnetName string
 '2019-datacenter-gensecond'
 '2019-datacenter-gs'
 '2022-datacenter-azure-edition'
-'2022-datacenter-gensecond'
+'2022-datacenter-g2'
 '2022-datacenter-core-g2'
 ])
-param OSVersion string = '2022-datacenter-gensecond'
+param OSVersion string = '2022-datacenter-g2'
 
 @description('Size of the virtual machine.')
 param vmSize string = 'Standard_D2s_v5'
